@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 
 const SearchBox = ({ setProducts, setSummary, fetchProducts, setLoading }) => {
   const [query, setQuery] = useState("");
-  const [searchLoading, setSearchLoading] = useState(false); // ✅ Local loading
+  const [searchLoading, setSearchLoading] = useState(false); 
 
   const handleAsk = async () => {
     if (!query.trim()) return;
