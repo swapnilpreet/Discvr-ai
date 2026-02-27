@@ -1,11 +1,21 @@
 const products = require("../data/products");
 require("dotenv").config();
 
- 
 exports.getProducts = (req, res) => {
-    res.json(products);
+  try {
+    res.status(200).json({
+      success: true,
+      count: products.length,
+      data: products,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch products",
+      error: error.message,
+    });
+  }
 };
-
 
 exports.askProducts = async (req, res) => {
   try {
@@ -57,7 +67,7 @@ exports.askProducts = async (req, res) => {
       });
     }
     const aiResponse = data.choices[0].message.content;
-    
+
     let parsed;
     try {
       parsed = JSON.parse(aiResponse);
