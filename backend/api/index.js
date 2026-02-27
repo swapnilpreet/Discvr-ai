@@ -11,9 +11,8 @@ app.use(express.json());
  
 app.use("/api", require("../routes/productRoutes"));
 
-
 app.get("/", (req, res) => {
-  res.send("Backend running on Vercel 🚀");
+  res.status(200).send("WORKING");
 });
- 
+
 module.exports = serverless(app);
