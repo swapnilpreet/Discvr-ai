@@ -6,7 +6,7 @@ const SearchBox = ({ setProducts, setSummary, fetchProducts }) => {
   const [query, setQuery] = useState("");
 
   const handleAsk = async () => {
-    const res = await fetch("https://discvr-ai-m429.vercel.app/api/ask", {
+    const res = await fetch("https://discvr-ai-backend.vercel.app/api/ask", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
