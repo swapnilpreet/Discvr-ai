@@ -1,26 +1,35 @@
-import React from "react";
-import { useEffect } from "react";
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
 
-const SearchBox = ({ setProducts, setSummary, fetchProducts }) => {
+const SearchBox = ({ setProducts, setSummary, fetchProducts, setLoading }) => {
   const [query, setQuery] = useState("");
+  const [searchLoading, setSearchLoading] = useState(false); // ✅ Local loading
 
   const handleAsk = async () => {
-    const res = await fetch("https://discvr-ai.onrender.com/api/ask", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ query }),
-    });
+    if (!query.trim()) return;
 
-    const data = await res.json();
+    try {
+      setSearchLoading(true);
+      setLoading(true);
 
-    setProducts(data.products || []);
-    setSummary(data.summary || "");
+      const res = await fetch("https://discvr-ai.onrender.com/api/ask", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ query }),
+      });
+
+      const data = await res.json();
+
+      setProducts(data.products || []);
+      setSummary(data.summary || "");
+    } catch (error) {
+      console.error("Error asking AI:", error);
+    } finally {
+      setSearchLoading(false);
+      setLoading(false);
+    }
   };
-
-  //   !query.trim() && alert("Please enter a query"); fefetchProducts();
 
   useEffect(() => {
     if (!query.trim()) {
@@ -34,11 +43,14 @@ const SearchBox = ({ setProducts, setSummary, fetchProducts }) => {
     <div className="ask-box">
       <input
         type="text"
-        placeholder="Ask something like 'laptop , mobile, headphones'..."
+        placeholder="Ask something like 'laptop, mobile, headphones'..."
         value={query}
         onChange={(e) => setQuery(e.target.value)}
       />
-      <button onClick={handleAsk}>Ask AI</button>
+
+      <button onClick={handleAsk} disabled={searchLoading}>
+        {searchLoading ? "Searching..." : "Ask AI"}
+      </button>
     </div>
   );
 };
