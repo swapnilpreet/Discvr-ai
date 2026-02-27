@@ -11,7 +11,7 @@ function App() {
 
   const fetchProducts = async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/products");
+      const res = await fetch("https://discvr-ai-m429.vercel.app/api/products");
       const data = await res.json();
       setProducts(data);
     } catch (error) {
