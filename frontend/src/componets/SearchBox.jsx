@@ -6,7 +6,7 @@ const SearchBox = ({ setProducts, setSummary, fetchProducts }) => {
   const [query, setQuery] = useState("");
 
   const handleAsk = async () => {
-    const res = await fetch("http://localhost:5000/api/ask", {
+    const res = await fetch("https://discvr-ai.onrender.com/api/ask", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

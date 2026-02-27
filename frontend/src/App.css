@@ -62,3 +62,10 @@ body {
   margin-bottom: 15px;
   border-left: 5px solid #007bff;
 }
+
+.loading {
+  margin: 20px 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #555;
+}

@@ -1,37 +1,48 @@
-import { useState } from 'react'
-import './App.css'
-import { useEffect } from 'react';
-import SearchBox from './componets/SearchBox';
-import Product from './componets/Product';
+import { useState, useEffect } from "react";
+import "./App.css";
+import SearchBox from "./componets/SearchBox";
+import Product from "./componets/Product";
 
 function App() {
   const [products, setProducts] = useState([]);
   const [summary, setSummary] = useState("");
-   
+  const [loading, setLoading] = useState(false); // ✅ NEW
 
   const fetchProducts = async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/products");
+      setLoading(true); // ✅ Start loading
+      const res = await fetch("https://discvr-ai.onrender.com/api/products");
       const data = await res.json();
-      setProducts(data);
+      setProducts(data.data);
     } catch (error) {
       console.error("Error fetching products:", error);
+    } finally {
+      setLoading(false); // ✅ Stop loading
     }
-  }
+  };
 
   useEffect(() => {
     fetchProducts();
   }, []);
 
-  // console.log("Products:", products);
   return (
     <div className="container">
       <h1>AI Discovery</h1>
-      <SearchBox setProducts={setProducts} setSummary={setSummary} fetchProducts={fetchProducts}/>
+
+      <SearchBox
+        setProducts={setProducts}
+        setSummary={setSummary}
+        fetchProducts={fetchProducts}
+        setLoading={setLoading}   // ✅ Pass loading setter
+      />
+
+      {loading && <div className="loading">Loading...</div>} {/* ✅ Loader */}
+
       {summary && <div className="summary">{summary}</div>}
+
       <Product products={products} />
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
